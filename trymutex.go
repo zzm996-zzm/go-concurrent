@@ -40,9 +40,9 @@ func (m *TryMuext) TryLock() bool {
 }
 
 func (m *TryMuext) Count() int32 {
-	count := atomic.LoadInt32((*int32)(unsafe.Pointer(&m.Mutex)))
-	count = count  >> mutexWaiterShift
-	count = count + (count & mutexLocked)
+	v := atomic.LoadInt32((*int32)(unsafe.Pointer(&m.Mutex)))
+	count := v  >> mutexWaiterShift
+	count = count + (v & mutexLocked)
 	return count
 }
 
