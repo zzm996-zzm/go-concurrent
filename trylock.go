@@ -1,22 +1,21 @@
 package main
 
 import (
-	"fmt"
 	"sync/atomic"
 	"time"
 )
 
-type TryMutex struct {
+type TryChan struct {
 	c        chan struct{}
 	tryCount uint32
 	state    int32
 }
-func (try *TryMutex) GetCount() uint32{
+func (try *TryChan) GetCount() uint32{
 	return try.tryCount
 
 }
 
-func (try *TryMutex) TryLock() bool {
+func (try *TryChan) TryLock() bool {
 
 	if atomic.LoadInt32(&try.state) == 0 {
 
@@ -39,15 +38,21 @@ func (try *TryMutex) TryLock() bool {
 
 }
 
-func main() {
-	try := &TryMutex{}
-	for i := 0; i < 1000; i++ {
-		go func(){
-			x := try.TryLock()
-			fmt.Println(x)
-		}()
-	}
 
-	time.Sleep(2 * time.Second)
-	fmt.Println( try.GetCount())
-}
+
+//func main() {
+//	try := &TryChan{}
+//	for i := 0; i < 1000; i++ {
+//		go func(){
+//			x := try.TryLock()
+//			if x{
+//				fmt.Println("拿锁成功")
+//			}
+//		}()
+//	}
+//
+//	time.Sleep(2 * time.Second)
+//	fmt.Println( try.GetCount())
+//
+//	fmt.Println(mutexLocked,mutexWoken,mutexStarving,mutexWaiterShift)
+//}
