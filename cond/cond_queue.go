@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"sync"
-	"time"
 )
 
 type Queue interface {
@@ -71,27 +70,27 @@ func (q *LimitQueue) Close() error {
 	return nil
 }
 
-func main() {
-	q := NewLimitQueue(10, &sync.Mutex{})
+// func main() {
+// 	q := NewLimitQueue(10, &sync.Mutex{})
 
-	go func() {
-		x, _ := q.Pop()
-		fmt.Println("go0", x)
-	}()
+// 	go func() {
+// 		x, _ := q.Pop()
+// 		fmt.Println("go0", x)
+// 	}()
 
-	go func() {
-		x, _ := q.Pop()
-		fmt.Println("go1", x)
-	}()
+// 	go func() {
+// 		x, _ := q.Pop()
+// 		fmt.Println("go1", x)
+// 	}()
 
-	go func() {
+// 	go func() {
 
-		for i := 0; i < 2; i++ {
-			q.Add(i)
-			time.Sleep(1 * time.Second)
-			fmt.Println("add ", i)
+// 		for i := 0; i < 2; i++ {
+// 			q.Add(i)
+// 			time.Sleep(1 * time.Second)
+// 			fmt.Println("add ", i)
 
-		}
-	}()
-	time.Sleep(10 * time.Second)
-}
+// 		}
+// 	}()
+// 	time.Sleep(10 * time.Second)
+// }

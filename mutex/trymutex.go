@@ -1,11 +1,8 @@
 package main
 
 import (
-	"fmt"
-	"runtime"
 	"sync"
 	"sync/atomic"
-	"time"
 	"unsafe"
 )
 
@@ -95,22 +92,22 @@ func (m *TryMuext) IsStarving() bool {
 	return value&mutexStarving == mutexStarving
 }
 
-func main() {
-	var mu TryMuext
-	go func() {
-		mu.Lock()
-		time.Sleep(time.Second * 100)
-	}()
-	time.Sleep(time.Second)
+// func main() {
+// 	var mu TryMuext
+// 	go func() {
+// 		mu.Lock()
+// 		time.Sleep(time.Second * 100)
+// 	}()
+// 	time.Sleep(time.Second)
 
-	for i := 0; i < 1000; i++ { // 启动1000个goroutine
-		go func() {
-			t := time.After(time.Millisecond * 100)
-			x := mu.TimeLock(t)
-			fmt.Println(x)
-		}()
-	}
+// 	for i := 0; i < 1000; i++ { // 启动1000个goroutine
+// 		go func() {
+// 			t := time.After(time.Millisecond * 100)
+// 			x := mu.TimeLock(t)
+// 			fmt.Println(x)
+// 		}()
+// 	}
 
-	time.Sleep(time.Second * 10)
-	fmt.Println(runtime.NumGoroutine())
-}
+// 	time.Sleep(time.Second * 10)
+// 	fmt.Println(runtime.NumGoroutine())
+// }
