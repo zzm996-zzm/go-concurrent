@@ -80,3 +80,15 @@ func main() {
 
 	fmt.Println(flag.Done()) //true
 }
+
+// 一个组合的并发原语
+type MuOnce struct {
+	sync.RWMutex
+	sync.Once
+}
+
+//给组合的Once提供Done方法
+func (m *MuOnce) Done() bool {
+	p := (*uint32)(unsafe.Pointer(uintptr(unsafe.Pointer(m)) + unsafe.Sizeof(sync.RWMutex{})))
+	return *p == 1
+}
